@@ -138,13 +138,6 @@ All of this is intentional and clearly scoped.
 
 ---
 
-## 👨‍💻 Contributors
-
-* **Rutwik Dakhore**
-* Team Members (as applicable)
-
----
-
 ## 📜 License
 
 This project is intended for **academic and educational use**.
