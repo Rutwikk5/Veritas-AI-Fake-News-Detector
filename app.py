@@ -1,3 +1,5 @@
+from huggingface_hub import hf_hub_download
+import os
 import streamlit as st
 import tensorflow as tf
 from tensorflow import keras
@@ -62,27 +64,41 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 2. MODEL LOADING (The Clean Version)
+# 2. MODEL LOADING (Hugging Face Version)
 # ==========================================
 @st.cache_resource
 def load_models():
-    # --- A. Load Text Model (.h5) ---
+    MODEL_REPO = "RUTWIK55/veritas-fake-news-models"
+    MODEL_DIR = "models"
+    os.makedirs(MODEL_DIR, exist_ok=True)
+
+    # --- A. Download & Load Text Model (.h5) ---
     try:
-        # Use TensorFlow's keras for legacy .h5 models
+        text_model_path = hf_hub_download(
+            repo_id=MODEL_REPO,
+            filename="final_text_model.h5",
+            local_dir=MODEL_DIR
+        )
+
         text_model = tf.keras.models.load_model(
-            "final_text_model.h5",
+            text_model_path,
             custom_objects={"TFBertModel": TFBertModel}
         )
-        print("Text Model Loaded (Full Model)")
+        print("✅ Text Model Loaded from Hugging Face")
     except Exception as e:
         st.error(f"❌ Text Model Error: {e}")
         text_model = None
 
-    # --- B. Load Image Model (.keras) ---
+    # --- B. Download & Load Image Model (.keras) ---
     try:
-        # Use standalone keras for .keras format
-        image_model = keras.models.load_model("final_image_model.keras")
-        print("Image Model Loaded (Full Model)")
+        image_model_path = hf_hub_download(
+            repo_id=MODEL_REPO,
+            filename="final_image_model.keras",
+            local_dir=MODEL_DIR
+        )
+
+        image_model = keras.models.load_model(image_model_path)
+        print("✅ Image Model Loaded from Hugging Face")
     except Exception as e:
         st.error(f"❌ Image Model Error: {e}")
         image_model = None
@@ -169,7 +185,7 @@ with col2:
                 img_array = np.array(img)
                 if img_array.shape[-1] == 4: img_array = img_array[..., :3]
                 
-                img_array = tf_keras.applications.resnet50.preprocess_input(img_array) 
+                img_array = preprocess_input(img_array)
                 img_array = tf.expand_dims(img_array, 0)
                 
                 img_preds = image_model.predict(img_array, verbose=0)[0]
@@ -201,5 +217,6 @@ with col2:
     else:
 
         st.info("Waiting for input...")
+
 
 
