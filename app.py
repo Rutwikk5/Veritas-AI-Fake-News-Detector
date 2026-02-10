@@ -4,8 +4,8 @@ from tensorflow import keras
 import numpy as np
 from PIL import Image
 from transformers import BertTokenizer, TFBertModel
-from tf_keras.applications import resnet50
-
+from tensorflow.keras.applications import ResNet50
+from tensorflow.keras.applications.resnet50 import preprocess_input
 # ==========================================
 # 1. PAGE CONFIGURATION
 # ==========================================
@@ -201,4 +201,5 @@ with col2:
     else:
 
         st.info("Waiting for input...")
+
 
