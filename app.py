@@ -68,11 +68,10 @@ st.markdown("""
 def load_models():
     # --- A. Load Text Model (.h5) ---
     try:
-        # We use tf_keras to load the legacy .h5 file
-        # We must tell it what 'TFBertModel' is using custom_objects
-        text_model = tf_keras.models.load_model(
-            'final_text_model.h5',
-            custom_objects={'TFBertModel': TFBertModel}
+        # Use TensorFlow's keras for legacy .h5 models
+        text_model = tf.keras.models.load_model(
+            "final_text_model.h5",
+            custom_objects={"TFBertModel": TFBertModel}
         )
         print("Text Model Loaded (Full Model)")
     except Exception as e:
@@ -81,14 +80,15 @@ def load_models():
 
     # --- B. Load Image Model (.keras) ---
     try:
-        # We use keras (Keras 3) to load the new .keras file
-        image_model = keras.models.load_model('final_image_model.keras')
+        # Use standalone keras for .keras format
+        image_model = keras.models.load_model("final_image_model.keras")
         print("Image Model Loaded (Full Model)")
     except Exception as e:
         st.error(f"❌ Image Model Error: {e}")
         image_model = None
 
     return text_model, image_model
+
 
 # Load Resources
 text_model, image_model = load_models()
@@ -201,3 +201,4 @@ with col2:
     else:
 
         st.info("Waiting for input...")
+
