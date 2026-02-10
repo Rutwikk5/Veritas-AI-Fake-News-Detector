@@ -68,6 +68,9 @@ st.markdown("""
 # ==========================================
 @st.cache_resource
 def load_models():
+    st.write("🚀 Starting model download from Hugging Face...")
+    st.write("⏳ This may take up to 1 minute on first load")
+    
     MODEL_REPO = "RUTWIK55/veritas-fake-news-models"
     MODEL_DIR = "models"
     os.makedirs(MODEL_DIR, exist_ok=True)
@@ -217,6 +220,7 @@ with col2:
     else:
 
         st.info("Waiting for input...")
+
 
 
 
