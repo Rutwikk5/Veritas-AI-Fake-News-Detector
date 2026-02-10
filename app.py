@@ -1,7 +1,6 @@
 import streamlit as st
 import tensorflow as tf
-import tf_keras
-import keras
+from tensorflow import keras
 import numpy as np
 from PIL import Image
 from transformers import BertTokenizer, TFBertModel
@@ -200,4 +199,5 @@ with col2:
                     st.metric("ResNet Score (Fake Prob)", f"{p_image_fake:.2f}")
 
     else:
+
         st.info("Waiting for input...")
